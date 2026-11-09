@@ -11,7 +11,7 @@ function Board() {
 
   useEffect(() => {
     // Tạm thời mình fix cứng boardId, flow chuẩn chỉnh về sau khi học nâng cao trực tiếp với trungquandev thì xử lý qua rect-router-dom
-    const boardId = '6aeaf5d2e389de4052061c22'
+    const boardId = '6af1704dfa8ef4052eb39048'
     fetchBoardDetailsAPI(boardId).then((board) => {
       setBoard(board)
     })
