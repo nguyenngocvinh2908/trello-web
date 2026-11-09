@@ -44,12 +44,14 @@ function BoardBar({ board }) {
     }>
       {/* Box Filter */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Chip
-          icon={<DashboardIcon />}
-          label={board?.title}
-          clickable
-          sx={MENU_STYLES}
-        />
+        <Tooltip title={board?.description}>
+          <Chip
+            icon={<DashboardIcon />}
+            label={board?.title}
+            clickable
+            sx={MENU_STYLES}
+          />
+        </Tooltip>
         <Chip
           icon={<VpnLockIcon />}
           label={formatters.capitalizeFirstLetter(board?.type)}
