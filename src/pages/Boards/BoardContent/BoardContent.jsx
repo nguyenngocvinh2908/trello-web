@@ -4,12 +4,13 @@ import { useColorScheme } from '@mui/material/styles'
 import ListColumns from './ListColumns/ListColumns'
 import * as sort from '~/utils/sort'
 import * as formmatters from '~/utils/formatters'
-import { DndContext, useSensor, useSensors, MouseSensor, TouchSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core'
+import { DndContext, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import lodash from 'lodash'
 
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
+import { MouseSensor, TouchSensor } from '~/customLibs/dndKitSensor'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
