@@ -22,6 +22,7 @@ import ListCards from './ListCards/ListCards'
 import CloseIcon from '@mui/icons-material/Close'
 import * as sort from '~/utils/sort'
 
+import { toast } from 'react-toastify'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
@@ -65,6 +66,7 @@ function Column({ column }) {
 
   const addNewCard = () => {
     if (!addCardValue) {
+      toast.error('Please enter Card Title!')
       return
     }
     // Gọi API Add New Card

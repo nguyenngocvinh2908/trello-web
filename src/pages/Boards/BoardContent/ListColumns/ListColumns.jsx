@@ -6,6 +6,7 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import TextField from '@mui/material/TextField'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import CloseIcon from '@mui/icons-material/Close'
+import { toast } from 'react-toastify'
 
 
 function ListColumns({ columns }) {
@@ -16,6 +17,7 @@ function ListColumns({ columns }) {
 
   const addNewColumn = () => {
     if (!addColumnValue) {
+      toast.error('Please enter Column Title!')
       return
     }
     // Gọi API Add New Column
