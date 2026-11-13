@@ -26,7 +26,7 @@ import { toast } from 'react-toastify'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const { mode } = useColorScheme()
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -60,21 +60,26 @@ function Column({ column }) {
 
   // Xử lý add new cart
   const [openNewCardForm, setOpenNewCardForm] = useState(false)
-  const [addCardValue, setAddCardValue] = useState('')
+  const [newCardTitle, setNewCardTitle] = useState('')
 
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
 
-  const addNewCard = () => {
-    if (!addCardValue) {
+  const addNewCard = async () => {
+    if (!newCardTitle) {
       toast.error('Please enter Card Title!')
       return
     }
-    // Gọi API Add New Card
+    // Tạo dữ liêu Card để gọi API
+    const newCarData = {
+      title: newCardTitle,
+      columnId: column._id
+    }
 
+    await createNewCard(newCarData)
 
     // Đóng trạng thái add Card $ clear inputAddNewCard
     toggleOpenNewCardForm()
-    setAddCardValue('')
+    setNewCardTitle('')
   }
 
   return (
@@ -191,8 +196,8 @@ function Column({ column }) {
                   variant='outlined'
                   autoFocus
                   data-no-dnd='true'
-                  value={addCardValue}
-                  onChange={(e) => setAddCardValue(e.target.value)}
+                  value={newCardTitle}
+                  onChange={(e) => setNewCardTitle(e.target.value)}
                   sx={{
                     '& label': { color: 'text.primary' },
                     '& input': {
