@@ -22,7 +22,7 @@ const CustomDropAnimation = {
   ideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: 0.5 } } })
 }
 
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   const { mode } = useColorScheme()
   // https://docs.dndkit.com/api-documentation/sensors
   // Nếu dùng pointerSensor mặc định thì phải kết hợp thuộc tính css touch-action: none ở những phần tử kéo thả - nhưng vẫn còn pug
@@ -230,8 +230,11 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
         const newColumnIndex = orderedColumns.findIndex(column => column._id === over.id)
         // Dùng 'arrayMove' của dnd-kit đê sắp xếp lại mảng Columns ban đầu
         const dndOrderedColumns = arrayMove(orderedColumns, oldColumnIndex, newColumnIndex)
+
         // Xử Lý Gọi Api Để Update Dữ Liệu
-        // -------------------------------
+        // Bây giờ xử lý theo cấp cha cao nhất rồi props xuống. Mai sau sẽ update redux sẽ nhanh hơn
+        moveColumns(dndOrderedColumns)
+
         setOrderedColumns(dndOrderedColumns)
       }
     }
