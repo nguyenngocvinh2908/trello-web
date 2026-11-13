@@ -22,7 +22,7 @@ const CustomDropAnimation = {
   ideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: 0.5 } } })
 }
 
-function BoardContent({ board }) {
+function BoardContent({ board, createNewColumn, createNewCard }) {
   const { mode } = useColorScheme()
   // https://docs.dndkit.com/api-documentation/sensors
   // Nếu dùng pointerSensor mặc định thì phải kết hợp thuộc tính css touch-action: none ở những phần tử kéo thả - nhưng vẫn còn pug
@@ -261,7 +261,7 @@ function BoardContent({ board }) {
           height: (theme) => theme.trelloCustom.boardContentHeight
         }
       }>
-        <ListColumns columns={orderedColumns} />
+        <ListColumns columns={ orderedColumns } createNewColumn={ createNewColumn } createNewCard={ createNewCard }/>
         <DragOverlay dropAnimation={CustomDropAnimation}>
           {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) && <Column column={activeDragItemData} />}
           {(activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) && <Card card={activeDragItemData} />}

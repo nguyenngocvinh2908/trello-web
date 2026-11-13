@@ -9,23 +9,34 @@ import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn, createNewCard }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
-  const [addColumnValue, setAddColumnValue] = useState('')
+  const [newColumnTitle, setNewColumnTitle] = useState('')
 
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
-  const addNewColumn = () => {
-    if (!addColumnValue) {
+  const addNewColumn = async () => {
+    if (!newColumnTitle) {
       toast.error('Please enter Column Title!')
       return
     }
-    // Gọi API Add New Column
 
+    // Tạo dữ liệu new Column để gọi API
+    const newColumnData = {
+      title: newColumnTitle
+    }
+
+    /**
+     * Gọi lên props function createNewColumn nằm ở compoment cha cao nhất (boards/_id.jsx)
+     * Lưu ý: Về sau ở học phần nâng cao trực tiếp chúng ta sẽ đưa dữ liệu board ra ngoài Redux Global Store
+     * Thì lúc này chúng ta sẽ gọi API ở đây là xong thay vì lần lượt gọi ngược lên những compoment cha phá trên khi nhận đc data newColumn
+     * - Với việc sử dụng redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất nhiều.
+     */
+    await createNewColumn(newColumnData)
 
     // Đóng trạng thái add column $ clear inputAddNewColumn
     toggleOpenNewColumnForm()
-    setAddColumnValue('')
+    setNewColumnTitle('')
   }
   return (
     // Thằng SortableContext yêu cầu items là một mảng dạng [ 'id-01', 'id-02' ] chứ không phải [{ id: 'id-01' }]
@@ -43,7 +54,7 @@ function ListColumns({ columns }) {
           '&::-webkit-scrollbar-track': { m : 2 }
         }}
       >
-        {columns?.map(column => (<Column key={column._id} column={column} />)
+        {columns?.map(column => (<Column key={column._id} column={column} createNewCard={createNewCard} />)
         )}
 
         {/* Box Add Column */}
@@ -95,8 +106,8 @@ function ListColumns({ columns }) {
                 size='small'
                 variant='outlined'
                 autoFocus
-                value={addColumnValue}
-                onChange={(e) => setAddColumnValue(e.target.value)}
+                value={newColumnTitle}
+                onChange={(e) => setNewColumnTitle(e.target.value)}
                 sx={{
                   '& label': { color: 'white' },
                   '& input': { color: 'white' },
