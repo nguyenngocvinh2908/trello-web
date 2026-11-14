@@ -20,7 +20,6 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import ListCards from './ListCards/ListCards'
 import CloseIcon from '@mui/icons-material/Close'
-import * as sort from '~/utils/sort'
 
 import { toast } from 'react-toastify'
 import { useSortable } from '@dnd-kit/sortable'
@@ -38,8 +37,8 @@ function Column({ column, createNewCard }) {
     setAnchorEl(null)
   }
 
-  // Map Sort List Card
-  const orderedCards = sort.mapOrder(column?.cards, column?.cardOrderIds, '_id')
+  // Cards đã đắp sắp xếp ở compoent cha cao nhất
+  const orderedCards = column.cards
 
   // Dnd Trello
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -64,8 +63,8 @@ function Column({ column, createNewCard }) {
 
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
 
-  const addNewCard = async () => {
-    if (!newCardTitle) {
+  const addNewCard = () => {
+    if (!newCardTitle.trim()) {
       toast.error('Please enter Card Title!')
       return
     }
@@ -75,7 +74,7 @@ function Column({ column, createNewCard }) {
       columnId: column._id
     }
 
-    await createNewCard(newCarData)
+    createNewCard(newCarData)
 
     // Đóng trạng thái add Card $ clear inputAddNewCard
     toggleOpenNewCardForm()
