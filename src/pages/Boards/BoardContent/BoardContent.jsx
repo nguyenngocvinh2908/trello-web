@@ -21,7 +21,7 @@ const CustomDropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: 0.5 } } })
 }
 
-function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn, moveCardToDifferentColumn }) {
   const { mode } = useColorScheme()
   // https://docs.dndkit.com/api-documentation/sensors
   // Nếu dùng pointerSensor mặc định thì phải kết hợp thuộc tính css touch-action: none ở những phần tử kéo thả - nhưng vẫn còn pug
@@ -58,7 +58,8 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerForm // Tên của hàm nào đó dùng hàm này : moveCardBetweenDifferentColumns
   ) => {
     setOrderedColumns(prevColumns => {
       // Tìm vị trí index của overCard trong column đích (nơi mà active card sắp đc thả)
@@ -107,6 +108,16 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
 
         // Cập nhật lại mảng cardOrderIds cho chuẩn dữ liệu
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
+      }
+
+      // Nếu function này đc gọi từ handleOnDragEnd nghĩa là kéo thả xong, lúc này mới gọi api 1 lần ở đây
+      if (triggerForm === 'handleOnDragEnd') {
+        /**
+          (Lưu ý nhỏ khi nối hàm này xuống BoardContent.jsx: ở nhánh if (oldColumnWhenDraggingCard._id !== overColumn._id) trong handleOnDragEnd,
+          tham số prevColumnId truyền vào phải là oldColumnWhenDraggingCard._id chứ không phải activeColumn._id,
+          vì sau khi chạy qua handleOnDragOver thì activeColumn đã bị đổi thành cột mới rồi).
+        */
+        moveCardToDifferentColumn(activeDraggingCardId, oldColumnWhenDraggingCard._id, nextOverColumn._id, nextColumns )
       }
       return nextColumns
     })
@@ -209,7 +220,8 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          'handleOnDragEnd'
         )
       } else {
         // Hành động kéo thả card trong 1 column

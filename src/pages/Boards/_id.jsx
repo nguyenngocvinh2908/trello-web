@@ -4,7 +4,7 @@ import Container from '@mui/material/Container'
 import AppBar from '~/components/AppBar/AppBar'
 import BoardBar from './BoardBar/BoardBar'
 import BoardContent from './BoardContent/BoardContent'
-import { fetchBoardDetailsAPI, createNewCardAPI, createNewColumnAPI, updateBoardDetailsAPI, updateColumnDetailsAPI } from '~/apis/index'
+import { fetchBoardDetailsAPI, createNewCardAPI, createNewColumnAPI, updateBoardDetailsAPI, updateColumnDetailsAPI, moveCardToDifferentColumnAPI } from '~/apis/index'
 import { generatePlaceholderCard } from '~/utils/formatters'
 import { isEmpty, cloneDeep } from 'lodash'
 import * as sort from '~/utils/sort'
@@ -78,7 +78,6 @@ function Board() {
         columnToUpdate.cardOrderIds.push(createdCard._id)
       }
     }
-
     setBoard(newBoard)
   }
 
@@ -115,6 +114,31 @@ function Board() {
     updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardsIds })
   }
 
+  /**
+   * Khi di chuyển card sang column khác
+   * Chỉ cần gọi API để cập nhật mảng cardOrderIds của columnActive and columnOver
+   * Cập nhật columnId của card đó
+   */
+  const moveCardToDifferentColumn = (currentCardId, prevColumnId, nextColumnId, dndOrderedColumns) => {
+    // Update chuẩn dữ liệu state Board
+    const dndOrderedColumnsIds = dndOrderedColumns.map(column => column._id)
+    const newBoard = {
+      ...board,
+      columns: dndOrderedColumns,
+      columnOrderIds: dndOrderedColumnsIds
+    }
+    setBoard(newBoard)
+
+    // 2. Lấy mảng cardOrderIds mới của cột cũ và cột mới từ tham số thứ 4
+    let prevCardOrderIds = dndOrderedColumns.find(column => column._id === prevColumnId)?.cardOrderIds
+    // Xử lý kéo card cuối cùng của 1 column sang column khác thì phải gủi lên BE mảng [] tránh phái BE lỗi validate dữ liệu
+    if (prevCardOrderIds[0].includes('placeholder-card')) prevCardOrderIds = []
+    const nextCardOrderIds = dndOrderedColumns.find(column => column._id === nextColumnId)?.cardOrderIds
+
+    // Gọi API xử lý phía BE
+    moveCardToDifferentColumnAPI({ currentCardId, prevColumnId, nextColumnId, prevCardOrderIds, nextCardOrderIds })
+  }
+
   if (!board) {
     return (
       <Box sx={{
@@ -141,6 +165,7 @@ function Board() {
         createNewCard={createNewCard}
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
+        moveCardToDifferentColumn={moveCardToDifferentColumn}
       />
     </Container>
   )
