@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 
 
-function ListColumns({ columns, createNewColumn, createNewCard }) {
+function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDetails }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const [newColumnTitle, setNewColumnTitle] = useState('')
 
@@ -54,7 +54,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
           '&::-webkit-scrollbar-track': { m : 2 }
         }}
       >
-        {columns?.map(column => (<Column key={column._id} column={column} createNewCard={createNewCard} />)
+        {columns?.map(column => (<Column key={column._id} column={column} createNewCard={createNewCard} deleteColumnDetails={deleteColumnDetails} />)
         )}
 
         {/* Box Add Column */}
@@ -106,11 +106,14 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
                 size='small'
                 variant='outlined'
                 autoFocus
+                autoComplete='off'
                 value={newColumnTitle}
                 onChange={(e) => setNewColumnTitle(e.target.value)}
                 sx={{
                   '& label': { color: 'white' },
-                  '& input': { color: 'white' },
+                  '& input': {
+                    color: 'white'
+                  },
                   '& label.Mui-focused': { color: 'white' },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': { borderColor: 'white' },
