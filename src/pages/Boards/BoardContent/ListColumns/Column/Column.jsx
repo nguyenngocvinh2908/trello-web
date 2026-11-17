@@ -21,14 +21,24 @@ import TextField from '@mui/material/TextField'
 import ListCards from './ListCards/ListCards'
 import CloseIcon from '@mui/icons-material/Close'
 
+import { cloneDeep } from 'lodash'
 import { toast } from 'react-toastify'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import { useConfirm } from 'material-ui-confirm'
+import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis/index'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  updateCurrentActiveBoard,
+  selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
 
-function Column({ column, createNewCard, deleteColumnDetails }) {
+function Column({ column }) {
   const { mode } = useColorScheme()
+
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -65,18 +75,40 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
 
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle.trim()) {
       toast.error('Please enter Card Title!')
       return
     }
     // Tạo dữ liêu Card để gọi API
-    const newCarData = {
+    const newCardData = {
       title: newCardTitle,
       columnId: column._id
     }
 
-    createNewCard(newCarData)
+    // Gọi API tạo mới card và làm lại dữ liệu state Board
+    const createdCard = await createNewCardAPI({
+      ...newCardData,
+      boardId: board._id
+    })
+
+    // Cập nhật lại state Board (dùng cloneDeep để đảm bảo tính bất biến Immutability)
+    const newBoard = cloneDeep(board)
+    const columnToUpdate = newBoard.columns.find(column => column._id === createdCard.columnId)
+
+    if (columnToUpdate) {
+      // Nếu column đang rỗng (chỉ chứa thẻ giữ chỗ FE_PlaceholderCard) thì thay thế hoàn toàn
+      if (columnToUpdate.cards.some(card => card.FE_PlaceholderCard)) {
+        columnToUpdate.cards = [createdCard]
+        columnToUpdate.cardOrderIds = [createdCard._id]
+      } else {
+        // Ngược lại nếu column đã có sẵn card thật thì push vào cuối mảng
+        columnToUpdate.cards.push(createdCard)
+        columnToUpdate.cardOrderIds.push(createdCard._id)
+      }
+    }
+    // setBoard(newBoard)
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     // Đóng trạng thái add Card $ clear inputAddNewCard
     toggleOpenNewCardForm()
@@ -91,7 +123,7 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
       document.activeElement.blur()
     }
 
-    const { confirmed, reason } = await confirmDeleteColumn({
+    const { confirmed } = await confirmDeleteColumn({
       title: 'Delete Column?',
       description: 'This action will permanently delete your Column and its Cards!',
       confirmationText: 'Confirm',
@@ -99,7 +131,18 @@ function Column({ column, createNewCard, deleteColumnDetails }) {
     })
 
     if (confirmed) {
-      deleteColumnDetails(column._id)
+      // Gọi API và Update cho chuẩn dữ liệu state Board
+      // Trường hợp này tương tự như moveColumns về tính bất biến Immutability
+      const newBoard = { ...board }
+      newBoard.columns = newBoard.columns.filter(c => c._id !== column._id)
+      newBoard.columnOrderIds = newBoard.columnOrderIds.filter(_id => _id !== column._id)
+      // setBoard(newBoard)
+      dispatch(updateCurrentActiveBoard(newBoard))
+
+      // Gọi API để xử lý phía BE
+      deleteColumnDetailsAPI(column._id).then(res => {
+        toast.success(res?.deleteResult || 'Column deleted successfully!')
+      })
     }
   }
 
