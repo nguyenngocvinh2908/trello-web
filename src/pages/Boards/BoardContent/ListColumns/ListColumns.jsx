@@ -4,18 +4,28 @@ import Button from '@mui/material/Button'
 import Column from './Column/Column'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import TextField from '@mui/material/TextField'
+import { cloneDeep } from 'lodash'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
+import { generatePlaceholderCard } from '~/utils/formatters'
+import { createNewColumnAPI } from '~/apis/index'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  updateCurrentActiveBoard,
+  selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
 
+function ListColumns({ columns }) {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
 
-function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDetails }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const [newColumnTitle, setNewColumnTitle] = useState('')
 
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error('Please enter Column Title!')
       return
@@ -26,13 +36,33 @@ function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDeta
       title: newColumnTitle
     }
 
+    // Gọi API tạo mới column và làm lại dữ liệu state Board
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+
+    // Khi tạo column mới từ backend trả về thì nó chưa có card nào, cần xử lý vấn đề kéo thả vào 1 column rỗng
+    const placeholderCard = generatePlaceholderCard(createdColumn)
+    createdColumn.cards = [placeholderCard]
+    createdColumn.cardOrderIds = [placeholderCard._id]
+
+    // Cập nhật lại state Board (dùng cloneDeep để đảm bảo tính bất biến Immutability trong redux)
+    // Nếu dùng const newBoard = { ...board } sẽ bị thông báo lỗi do spread operator là shallow coppy
+    const newBoard = cloneDeep(board)
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+
     /**
-     * Gọi lên props function createNewColumn nằm ở compoment cha cao nhất (boards/_id.jsx)
-     * Lưu ý: Về sau ở học phần nâng cao trực tiếp chúng ta sẽ đưa dữ liệu board ra ngoài Redux Global Store
-     * Thì lúc này chúng ta sẽ gọi API ở đây là xong thay vì lần lượt gọi ngược lên những compoment cha phá trên khi nhận đc data newColumn
-     * - Với việc sử dụng redux như vậy thì code sẽ Clean chuẩn chỉnh hơn rất nhiều.
-     */
-    createNewColumn(newColumnData)
+     * C2: Nếu ko dùng cloneDeep, ta có thể sử dụng array.concat thay cho push như docs của redux toolkit ở trên vì push sẽ thay đổi trực
+     * tiếp trong mảng, còn concat thì nó sẽ merge - ghép mảng lại tạo ra 1 mảng mới riêng biệt
+     * const newBoard = { ...board }
+     * newBoard.columns.concat([createdColumn])
+       newBoard.columnOrderIds.concat([createdColumn._id])
+      */
+
+    // Cập nhật lại board trong redux
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     // Đóng trạng thái add column $ clear inputAddNewColumn
     toggleOpenNewColumnForm()
@@ -54,7 +84,7 @@ function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDeta
           '&::-webkit-scrollbar-track': { m : 2 }
         }}
       >
-        {columns?.map(column => (<Column key={column._id} column={column} createNewCard={createNewCard} deleteColumnDetails={deleteColumnDetails} />)
+        {columns?.map(column => (<Column key={column._id} column={column} />)
         )}
 
         {/* Box Add Column */}
