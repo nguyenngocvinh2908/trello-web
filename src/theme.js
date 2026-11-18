@@ -84,8 +84,7 @@ const theme = extendTheme({
     }
   },
   // QUAN TRỌNG — để đổi theme bằng code
-  colorSchemeSelector: 'class',
-  cssVarPrefix: 'mui'
+  colorSchemeSelector: 'class'
 })
 
 export default theme
