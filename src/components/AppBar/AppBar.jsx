@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import ModeSelect from '../ModeSelect/ModeSelect'
 import AppsIcon from '@mui/icons-material/Apps'
 import SvgIcon from '@mui/material/SvgIcon'
-import TrelloLogo from '~/assets/trello.svg?react' // Khi Thêm 1 Icon Ngoài MUI Thì Cần Phải Import Thư Viện SVGR
+import { ReactComponent as TrelloIcon } from '~/assets/trello.svg'
 import Typography from '@mui/material/Typography'
 import Workspaces from './Menus/Workspaces'
 import Recent from './Menus/Recent'
@@ -43,7 +43,7 @@ function AppBar() {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <AppsIcon sx={{ color: 'white' }} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <SvgIcon component={TrelloLogo} inheritViewBox sx={{ color: 'white' }} />
+          <SvgIcon component={TrelloIcon} inheritViewBox sx={{ color: 'white' }} />
           <Typography variant='span' sx={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }}>Trello</Typography>
         </Box>
         {/* Menu */}

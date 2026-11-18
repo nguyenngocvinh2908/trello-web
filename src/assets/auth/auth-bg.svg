@@ -1,0 +1,118 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Nền gradient xanh dương chuẩn Trello / MUI Primary -->
+    <linearGradient id="bg-grad" x1="0" y1="0" x2="1920" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#091E42" />
+      <stop offset="48%" stop-color="#0747A6" />
+      <stop offset="100%" stop-color="#1976D2" />
+    </linearGradient>
+
+    <!-- Ánh sáng tỏa mềm phía sau form trung tâm -->
+    <radialGradient id="center-glow" cx="50%" cy="48%" r="45%">
+      <stop offset="0%" stop-color="#4FC3F7" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#0747A6" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Gradient cho các thẻ Kanban -->
+    <linearGradient id="card-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.06" />
+    </linearGradient>
+
+    <!-- Lưới chấm nền -->
+    <pattern id="dot-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#FFFFFF" fill-opacity="0.08" />
+    </pattern>
+  </defs>
+
+  <!-- Lớp nền chính -->
+  <rect width="1920" height="1080" fill="url(#bg-grad)" />
+  <rect width="1920" height="1080" fill="url(#dot-grid)" />
+  <rect width="1920" height="1080" fill="url(#center-glow)" />
+
+  <!-- Các khối hình học trang trí phía trên -->
+  <circle cx="180" cy="140" r="220" fill="#2684FF" fill-opacity="0.12" />
+  <circle cx="1760" cy="180" r="260" fill="#00B8D9" fill-opacity="0.1" />
+  <path d="M0 860C340 780 620 960 960 910C1300 860 1580 740 1920 820V1080H0V860Z" fill="#091E42" fill-opacity="0.35" />
+
+  <!-- CỤM MINH HỌA GÓC DƯỚI BÊN TRÁI (Bảng Kanban & Columns) -->
+  <g transform="translate(90, 560)">
+    <!-- Cột 1: To Do -->
+    <rect x="0" y="60" width="150" height="380" rx="14" fill="url(#card-grad)" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5" />
+    <rect x="18" y="82" width="68" height="10" rx="5" fill="#90CAF9" fill-opacity="0.8" />
+    <!-- Card 1.1 -->
+    <rect x="16" y="108" width="118" height="74" rx="8" fill="#FFFFFF" fill-opacity="0.14" />
+    <rect x="28" y="122" width="42" height="6" rx="3" fill="#FDBA26" />
+    <rect x="28" y="136" width="90" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.7" />
+    <rect x="28" y="148" width="64" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.45" />
+    <!-- Card 1.2 -->
+    <rect x="16" y="196" width="118" height="86" rx="8" fill="#FFFFFF" fill-opacity="0.14" />
+    <rect x="28" y="210" width="36" height="6" rx="3" fill="#69F0AE" />
+    <rect x="28" y="224" width="94" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.7" />
+    <rect x="28" y="236" width="76" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.45" />
+    <circle cx="114" cy="264" r="9" fill="#4FC3F7" fill-opacity="0.85" />
+
+    <!-- Cột 2: In Progress (Cao hơn tạo nhịp điệu) -->
+    <rect x="172" y="10" width="156" height="430" rx="14" fill="url(#card-grad)" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="1.5" />
+    <rect x="190" y="32" width="84" height="10" rx="5" fill="#FDBA26" fill-opacity="0.9" />
+    <!-- Card 2.1 có ảnh bìa -->
+    <rect x="188" y="58" width="124" height="112" rx="8" fill="#FFFFFF" fill-opacity="0.18" />
+    <rect x="198" y="68" width="104" height="42" rx="5" fill="#2684FF" fill-opacity="0.55" />
+    <rect x="198" y="120" width="88" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.85" />
+    <rect x="198" y="132" width="60" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.5" />
+    <circle cx="290" cy="152" r="9" fill="#FDBA26" />
+    <circle cx="276" cy="152" r="9" fill="#69F0AE" />
+    <!-- Card 2.2 -->
+    <rect x="188" y="184" width="124" height="72" rx="8" fill="#FFFFFF" fill-opacity="0.14" />
+    <rect x="200" y="198" width="46" height="6" rx="3" fill="#FF7043" />
+    <rect x="200" y="212" width="96" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.7" />
+    <rect x="200" y="224" width="70" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.45" />
+
+    <!-- Thẻ đang được kéo thả lơ lửng -->
+    <g transform="rotate(-6 260 320)">
+      <rect x="205" y="278" width="146" height="84" rx="10" fill="#1976D2" stroke="#90CAF9" stroke-width="2" />
+      <rect x="220" y="294" width="48" height="7" rx="3.5" fill="#69F0AE" />
+      <rect x="220" y="310" width="112" height="7" rx="3.5" fill="#FFFFFF" />
+      <rect x="220" y="324" width="82" height="7" rx="3.5" fill="#BBDEFB" />
+    </g>
+  </g>
+
+  <!-- CỤM MINH HỌA GÓC DƯỚI BÊN PHẢI (Hoàn thành công việc & Cộng tác) -->
+  <g transform="translate(1440, 540)">
+    <!-- Bảng tổng quan lớn -->
+    <rect x="40" y="70" width="330" height="390" rx="18" fill="url(#card-grad)" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="1.5" />
+    
+    <!-- Thanh tiêu đề bảng -->
+    <rect x="68" y="102" width="140" height="12" rx="6" fill="#FFFFFF" fill-opacity="0.8" />
+    <circle cx="326" cy="108" r="12" fill="#FDBA26" />
+    <circle cx="306" cy="108" r="12" fill="#4FC3F7" />
+    <circle cx="286" cy="108" r="12" fill="#69F0AE" />
+
+    <!-- Các dòng Checklist hoàn thành -->
+    <rect x="68" y="142" width="274" height="58" rx="10" fill="#FFFFFF" fill-opacity="0.14" />
+    <circle cx="96" cy="171" r="12" fill="#69F0AE" fill-opacity="0.25" stroke="#69F0AE" stroke-width="2" />
+    <path d="M91 171L94.5 174.5L102 167" stroke="#69F0AE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="120" y="162" width="150" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.85" />
+    <rect x="120" y="176" width="96" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.45" />
+
+    <rect x="68" y="214" width="274" height="58" rx="10" fill="#FFFFFF" fill-opacity="0.14" />
+    <circle cx="96" cy="243" r="12" fill="#69F0AE" fill-opacity="0.25" stroke="#69F0AE" stroke-width="2" />
+    <path d="M91 243L94.5 246.5L102 239" stroke="#69F0AE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="120" y="234" width="176" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.85" />
+    <rect x="120" y="248" width="118" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.45" />
+
+    <rect x="68" y="286" width="274" height="58" rx="10" fill="#FFFFFF" fill-opacity="0.1" />
+    <circle cx="96" cy="315" r="12" stroke="#90CAF9" stroke-width="2" stroke-dasharray="3 3" />
+    <rect x="120" y="306" width="132" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.65" />
+    <rect x="120" y="320" width="84" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.35" />
+
+    <!-- Huy hiệu tiến độ nổi góc trên trái của cụm -->
+    <g transform="translate(0, 15)">
+      <rect x="0" y="0" width="132" height="76" rx="14" fill="#0D47A1" stroke="#64B5F6" stroke-width="2" />
+      <rect x="18" y="18" width="54" height="7" rx="3.5" fill="#90CAF9" />
+      <!-- Thanh progress bar -->
+      <rect x="18" y="38" width="96" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.2" />
+      <rect x="18" y="38" width="74" height="10" rx="5" fill="#69F0AE" />
+    </g>
+  </g>
+</svg>

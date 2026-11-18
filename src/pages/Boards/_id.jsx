@@ -1,5 +1,6 @@
 // Board Detail Page
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import Container from '@mui/material/Container'
 import AppBar from '~/components/AppBar/AppBar'
 import BoardBar from './BoardBar/BoardBar'
@@ -23,12 +24,11 @@ function Board() {
   // const [board, setBoard] = useState(null)
   // Lấy dữ liệu board trực tiếp từ Redux Store
   const board = useSelector(selectCurrentActiveBoard)
-
+  // useParams() trả về props
+  const { boardId } = useParams()
   useEffect(() => {
-    const boardId = '6af1704dfa8ef4052eb39048'
-    // Gọi API thông qua Redux Thunk
     dispatch(fetchBoardDetailsAPI(boardId))
-  }, [dispatch])
+  }, [dispatch, boardId])
 
   // Func này có nhiệm vụ gọi api update lại dữ liệu kéo thả column xong xuôi
   const moveColumns = (dndOrderedColumns) => {
