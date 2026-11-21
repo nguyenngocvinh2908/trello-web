@@ -158,6 +158,7 @@ function LoginForm() {
               color="primary"
               size="large"
               fullWidth
+              className='interceptor-loading'
               sx={{ fontWeight: 600 }}
             >
               Login

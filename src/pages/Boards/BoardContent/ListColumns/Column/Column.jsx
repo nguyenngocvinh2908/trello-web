@@ -306,6 +306,7 @@ function Column({ column }) {
                     color='success'
                     size='small'
                     data-no-dnd='true'
+                    className='interceptor-loading'
                     sx={{
                       boxShadow: 'none',
                       border: '0.5px solid',

@@ -156,6 +156,7 @@ function ListColumns({ columns }) {
                   variant='contained'
                   color='success'
                   size='small'
+                  className='interceptor-loading'
                   sx={{
                     boxShadow: 'none',
                     border: '0.5px solid',
