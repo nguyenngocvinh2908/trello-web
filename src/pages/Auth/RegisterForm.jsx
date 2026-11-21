@@ -21,16 +21,21 @@ import {
   PASSWORD_CONFIRMATION_MESSAGE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import { registerUserAPI } from '~/apis/index'
+import { toast } from 'react-toastify'
 
 function RegisterForm() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const submitRegister = (data) => {
     const { email, password } = data
-    // Gọi API đăng ký tại đây, sau khi thành công sẽ chuyển hướng về trang Login kèm query registeredEmail
-    // console.log('submitRegister data:', { email, password })
-    // navigate(`/login?registeredEmail=${email}`)
+    toast.promise(
+      registerUserAPI({ email, password }),
+      { pending: 'Registration is progress...' }
+    ).then(user => {
+      navigate(`/login?registeredEmail=${user.email}`)
+    })
   }
 
   return (

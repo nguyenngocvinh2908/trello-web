@@ -24,9 +24,9 @@ import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 
 function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm()
-  // const [searchParams] = useSearchParams()
-  // const registeredEmail = searchParams.get('registeredEmail')
-  // const verifiedEmail = searchParams.get('verifiedEmail')
+  const [searchParams] = useSearchParams()
+  const registeredEmail = searchParams.get('registeredEmail')
+  const verifiedEmail = searchParams.get('verifiedEmail')
 
   const submitLogIn = (data) => {
     // Dữ liệu { email, password } đã vượt qua validation
@@ -79,7 +79,7 @@ function LoginForm() {
           </Box>
 
           {/* Thông báo trạng thái từ URL (sau khi đăng ký hoặc xác thực email) */}
-          {/* <Box
+          <Box
             sx={{
               marginTop: '1em',
               display: 'flex',
@@ -101,14 +101,14 @@ function LoginForm() {
 
             {registeredEmail && (
               <Alert severity="info" sx={{ '.MuiAlert-message': { overflow: 'hidden' } }}>
-                Một email xác thực đã được gửi tới&nbsp;
+                A verification email has been sent to&nbsp;
                 <Typography variant="span" sx={{ fontWeight: 'bold', '&:hover': { color: '#fdba26' } }}>
                   {registeredEmail}
                 </Typography>
                 <br />Please check your inbox and verify your account before logging in!
               </Alert>
             )}
-          </Box> */}
+          </Box>
 
           {/* Các trường nhập liệu Email & Password */}
           <Box sx={{ padding: '0 1em 1em 1em' }}>
