@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate} from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
@@ -21,16 +21,25 @@ import {
   FIELD_REQUIRED_MESSAGE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import { useDispatch } from 'react-redux'
+import { loginUserAPI } from '~/redux/user/userSlice'
+import { toast } from 'react-toastify'
 
 function LoginForm() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [searchParams] = useSearchParams()
   const registeredEmail = searchParams.get('registeredEmail')
   const verifiedEmail = searchParams.get('verifiedEmail')
 
   const submitLogIn = (data) => {
-    // Dữ liệu { email, password } đã vượt qua validation
-    // console.log('submitLogIn data:', data)
+    toast.promise(
+      dispatch(loginUserAPI(data)),
+      { pending: 'Logging in...' }
+    ).then((res) => {
+      if (!res.error) navigate('/')
+    })
   }
 
   return (
