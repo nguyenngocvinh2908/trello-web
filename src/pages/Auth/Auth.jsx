@@ -7,9 +7,9 @@ import authBg from '~/assets/auth/auth-bg.svg?url'
 
 function Auth () {
   const location = useLocation()
-
   const isLogin = location.pathname === '/login'
   const isRegister = location.pathname === '/register'
+
   return (
     <Box sx={{
       display: 'flex',
