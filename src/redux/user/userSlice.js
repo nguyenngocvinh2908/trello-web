@@ -13,9 +13,20 @@ export const loginUserAPI = createAsyncThunk(
   'user/loginUserAPI',
   async (data) => {
     const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/users/login`, data)
-    toast.success('Loging Successfully!', {
+    toast.success('Logged in successfully!', {
       theme: 'colored'
     })
+    return response.data
+  }
+)
+
+export const logoutUserAPI = createAsyncThunk(
+  'user/logoutUserAPI',
+  async (showSuccessMessage = true) => {
+    const response = await authorizedAxiosInstance.delete(`${API_ROOT}/v1/users/logout`)
+    if (showSuccessMessage) {
+      toast.success('Logged out successfully!')
+    }
     return response.data
   }
 )
@@ -28,6 +39,10 @@ export const userSlice = createSlice({
     builder.addCase(loginUserAPI.fulfilled, (state, action) => {
       // action.payload chính là response.data trả về từ API login
       state.currentUser = action.payload
+    })
+    builder.addCase(logoutUserAPI.fulfilled, (state) => {
+      // Xóa currentUser về null -> redux-persist tự động xóa luôn dữ liệu user trong localStorage
+      state.currentUser = null
     })
   }
 })

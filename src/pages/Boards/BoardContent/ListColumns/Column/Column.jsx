@@ -116,7 +116,7 @@ function Column({ column }) {
   }
 
   // Xử lý xóa column và cards bên trong nó
-  const confirmDeleteColumn= useConfirm()
+  const confirmDeleteColumn = useConfirm()
   const handleDeleteColumn = async () => {
     // Gỡ focus khỏi thẻ <div> của Column trước khi Dialog gắn aria-hidden lên #root
     if (document.activeElement instanceof HTMLElement) {
