@@ -20,6 +20,10 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 const persistor = persistStore(store)
 
+// Kỹ thuật Inject Store: truyền store vào file JS thuần authorizeAxios.js
+import { injectStore } from '~/utils/authorizeAxios'
+injectStore(store)
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter basename='/'>
     <Provider store={store} >
@@ -28,8 +32,30 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <ConfirmProvider
             defaultOptions={{
               allowClose: false,
-              confirmationButtonProps: { color: 'error', variant: 'outlined' },
-              cancellationButtonProps: { color: 'inherit' }
+              dialogProps: {
+                maxWidth: 'xs',
+                fullWidth: true,
+                PaperProps: {
+                  sx: { borderRadius: 3, p: 1, backgroundImage: 'none' }
+                }
+              },
+              titleProps: {
+                sx: { fontWeight: 700, fontSize: '1.15rem', pb: 1 }
+              },
+              dialogActionsProps: {
+                sx: { px: 3, pb: 2, gap: 1 }
+              },
+              cancellationButtonProps: {
+                variant: 'outlined',
+                color: 'inherit',
+                sx: { borderRadius: 2, textTransform: 'none', fontWeight: 600, px: 2.5, borderColor: 'divider' }
+              },
+              confirmationButtonProps: {
+                variant: 'contained',
+                color: 'error',
+                disableElevation: true,
+                sx: { borderRadius: 2, textTransform: 'none', fontWeight: 600, px: 2.5 }
+              }
             }}
           >
             <CssBaseline />
