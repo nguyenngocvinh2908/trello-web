@@ -5,7 +5,6 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 import { useColorScheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 
@@ -48,12 +47,6 @@ function ModeSelect() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <DarkModeIcon fontSize='small'/>
           Dark
-          </Box>
-        </MenuItem>
-        <MenuItem value="system">
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SettingsBrightnessIcon fontSize='small'/>
-          System
           </Box>
         </MenuItem>
       </Select>
