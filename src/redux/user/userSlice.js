@@ -31,6 +31,14 @@ export const logoutUserAPI = createAsyncThunk(
   }
 )
 
+export const updateUserAPI = createAsyncThunk(
+  'user/updateUserAPI',
+  async (data) => {
+    const response = await authorizedAxiosInstance.patch(`${API_ROOT}/v1/users/update`, data)
+    return response.data
+  }
+)
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -43,6 +51,9 @@ export const userSlice = createSlice({
     builder.addCase(logoutUserAPI.fulfilled, (state) => {
       // Xóa currentUser về null -> redux-persist tự động xóa luôn dữ liệu user trong localStorage
       state.currentUser = null
+    })
+    builder.addCase(updateUserAPI.fulfilled, (state, action) => {
+      state.currentUser = action.payload
     })
   }
 })

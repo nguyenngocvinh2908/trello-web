@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { useColorScheme } from '@mui/material/styles'
 import ListColumns from './ListColumns/ListColumns'
 import * as formmatters from '~/utils/formatters'
 import { DndContext, useSensor, useSensors, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core'
@@ -22,7 +21,6 @@ const CustomDropAnimation = {
 }
 
 function BoardContent({ board, moveColumns, moveCardInTheSameColumn, moveCardToDifferentColumn }) {
-  const { mode } = useColorScheme()
   // https://docs.dndkit.com/api-documentation/sensors
   // Nếu dùng pointerSensor mặc định thì phải kết hợp thuộc tính css touch-action: none ở những phần tử kéo thả - nhưng vẫn còn pug
   // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
@@ -285,7 +283,7 @@ function BoardContent({ board, moveColumns, moveCardInTheSameColumn, moveCardToD
       <Box sx={
         {
           p: '10px 0',
-          backgroundColor: (mode === 'dark' ? '#34495e' : '#1976d2'),
+          backgroundColor: 'trello.boardContentBg',
           width: '100%',
           height: (theme) => theme.trelloCustom.boardContentHeight
         }

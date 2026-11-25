@@ -18,16 +18,38 @@ const theme = extendTheme({
   colorSchemes: {
     light: {
       palette: {
-        // mode: 'light',
-        // primary: { main: '#1976d2ff', light: '#63a4ff' },
-        // background: { default: '#ffffff' }
+        primary: {
+          main: '#1976d2',
+          dark: '#0764c0',
+          light: '#63a4ff'
+        },
+        background: {
+          default: '#f0f4f8',
+          paper: '#ffffff'
+        },
+        divider: 'rgba(7, 100, 192, 0.12)',
+        // Nhóm màu dùng riêng cho layout Trello
+        trello: {
+          appBarBg: '#0764c0',
+          boardContentBg: '#1976d2'
+        }
       }
     },
     dark: {
       palette: {
-        // mode: 'dark',
-        // primary: { main: '#90caf9' },
-        // background: { default: '#121212' }
+        primary: {
+          main: '#90caf9'
+        },
+        background: {
+          default: '#22303e', // Đậm hơn AppBar (#2c3e50) một bậc để tạo chiều sâu
+          paper: '#34495e' // Trùng tông với BoardContent (#34495e)
+        },
+        divider: 'rgba(255, 255, 255, 0.12)',
+        // Nhóm màu dùng riêng cho layout Trello
+        trello: {
+          appBarBg: '#2c3e50',
+          boardContentBg: '#34495e'
+        }
       }
     }
   },
@@ -46,6 +68,14 @@ const theme = extendTheme({
           '*::-webkit-scrollbar-thumb:hover': {
             background: 'white'
           }
+        }
+      }
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          // Tắt lớp phủ trắng mờ mặc định của MUI Dark Mode để giữ đúng màu #34495e
+          backgroundImage: 'none'
         }
       }
     },
