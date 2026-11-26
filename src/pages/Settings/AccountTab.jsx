@@ -18,24 +18,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser, updateUserAPI } from '~/redux/user/userSlice'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { FIELD_REQUIRED_MESSAGE } from '~/utils/validators'
+import { FIELD_REQUIRED_MESSAGE, singleFileValidator } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
-
-const LIMIT_COMMON_FILE_SIZE = 10485760 // 10MB
-const ALLOW_COMMON_FILE_TYPES = ['image/jpg', 'image/jpeg', 'image/png']
-
-const singleFileValidator = (file) => {
-  if (!file || !file.name || !file.size || !file.type) {
-    return 'File cannot be blank.'
-  }
-  if (file.size > LIMIT_COMMON_FILE_SIZE) {
-    return 'Maximum file size exceeded. (10MB)'
-  }
-  if (!ALLOW_COMMON_FILE_TYPES.includes(file.type)) {
-    return 'File type is invalid. Only accept jpg, jpeg and png'
-  }
-  return null
-}
 
 function AccountTab() {
   const dispatch = useDispatch()
@@ -70,18 +54,18 @@ function AccountTab() {
       return
     }
 
-    const reqData = new FormData()
+    // Phải sử dụng FormData() để xử lý dữ liệu liên quan tới file khi gọi API
+    let reqData = new FormData()
     reqData.append('avatar', file)
 
+    // Goị API
     toast.promise(
-      dispatch(updateUserAPI(reqData)),
-      { pending: 'Uploading avatar...' }
-    ).then((res) => {
-      if (!res.error) {
-        toast.success('Avatar updated successfully!')
+      dispatch(updateUserAPI(reqData)).unwrap(),
+      {
+        pending: 'Uploading avatar...',
+        success: 'Avatar updated successfully!'
       }
-      e.target.value = ''
-    })
+    ).catch(() => {}).finally(() => e.target.value = '')
   }
 
   return (
