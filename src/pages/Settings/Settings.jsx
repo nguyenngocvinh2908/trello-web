@@ -38,7 +38,7 @@ function Settings() {
     >
       <AppBar />
 
-      <Container maxWidth="lg" sx={{ py: 5 }}>
+      <Container maxWidth="xl" sx={{ py: 5 }}>
         {/* Tiêu đề trang */}
         <Box sx={{ mb: 4 }}>
           <Typography variant="h5" fontWeight={700} gutterBottom>

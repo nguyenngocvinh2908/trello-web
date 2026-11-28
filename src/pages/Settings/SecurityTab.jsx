@@ -103,7 +103,7 @@ function SecurityTab() {
       <Divider sx={{ my: 3.5 }} />
 
       <form onSubmit={handleSubmit(submitChangePassword)}>
-        <Box sx={{ maxWidth: 480, display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           {/* Mật khẩu hiện tại */}
           <Box>
             <TextField
@@ -205,7 +205,7 @@ function SecurityTab() {
             <FieldErrorAlert errors={errors} fieldName={'new_password_confirmation'} />
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
             <Button
               className="interceptor-loading"
               type="submit"

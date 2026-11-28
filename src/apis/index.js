@@ -10,6 +10,15 @@ import { toast } from 'react-toastify'
 //   const response = await axios.get(`${API_ROOT}/v1/boards/${boardId}`)
 //   return response.data
 // }
+export const fetchBoardsAPI = async (searchPath) => {
+  const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/boards${searchPath}`)
+  return response.data
+}
+
+export const createNewBoardAPI = async (data) => {
+  const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/boards`, data)
+  return response.data
+}
 
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
   const response = await authorizedAxiosInstance.patch(`${API_ROOT}/v1/boards/${boardId}`, updateData)
