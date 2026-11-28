@@ -7,6 +7,7 @@ import Board from '~/pages/Boards/_id'
 import Auth from '~/pages/Auth/auth'
 import AccountVerification from '~/pages/Auth/AccountVerification'
 import Settings from '~/pages/Settings/Settings'
+import Boards from '~/pages/Boards/index'
 
 // 1. Chặn người dùng CHƯA đăng nhập vào các trang cần bảo mật (Board, Settings...)
 const ProtectedRoute = ({ user }) => {
@@ -29,6 +30,7 @@ function App() {
       <Route element={<ProtectedRoute user={currentUser} />}>
         <Route path="/" element={<Navigate to="/boards/6af1704dfa8ef4052eb39048" replace={true} />} />
         <Route path="/boards/:boardId" element={<Board />} />
+        <Route path="/boards" element={<Boards />} />
         <Route path="/settings" element={<Navigate to="/settings/account" replace={true} />} />
         <Route path="/settings/:tab" element={<Settings />} />
       </Route>
